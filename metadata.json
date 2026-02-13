@@ -1,0 +1,8 @@
+{
+  "name": "AgendaAuto - Gestão Inteligente para Autônomos",
+  "description": "Uma plataforma SaaS completa para profissionais autônomos automatizarem seus agendamentos, reduzirem faltas e gerenciarem finanças com auxílio de IA.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
