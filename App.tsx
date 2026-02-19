@@ -9,11 +9,15 @@ import PublicBooking from './components/PublicBooking';
 import Settings from './components/Settings';
 import Pricing from './components/Pricing';
 import TutorialVideo from './components/TutorialVideo';
+import LandingPage from './components/LandingPage';
 
-type View = 'dashboard' | 'calendar' | 'settings' | 'booking' | 'pricing' | 'tutorial';
+type View = 'landing' | 'dashboard' | 'calendar' | 'settings' | 'booking' | 'pricing' | 'tutorial';
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<View>('dashboard');
+  const [currentView, setCurrentView] = useState<View>(() => {
+    return (localStorage.getItem('agenda_auto_logged') === 'true') ? 'dashboard' : 'landing';
+  });
+  
   const [language, setLanguage] = useState<Language>('pt');
   const [appointments, setAppointments] = useState<Appointment[]>(MOCK_APPOINTMENTS as Appointment[]);
   const [professional] = useState<Professional>(MOCK_PROFESSIONAL);
@@ -35,6 +39,12 @@ const App: React.FC = () => {
     localStorage.setItem('agenda_auto_show_notes', showNotesBlock.toString());
   }, [showNotesBlock]);
 
+  useEffect(() => {
+    if (currentView !== 'landing') {
+      localStorage.setItem('agenda_auto_logged', 'true');
+    }
+  }, [currentView]);
+
   const handleUpdateStatus = (id: string, status: AppointmentStatus) => {
     setAppointments(prev => prev.map(apt => apt.id === id ? { ...apt, status } : apt));
   };
@@ -45,6 +55,15 @@ const App: React.FC = () => {
       setCurrentView('calendar');
     }
   };
+
+  const handleLogout = () => {
+    localStorage.setItem('agenda_auto_logged', 'false');
+    setCurrentView('landing');
+  };
+
+  if (currentView === 'landing') {
+    return <LandingPage t={t} language={language} onStart={() => setCurrentView('dashboard')} />;
+  }
 
   const renderView = () => {
     const commonProps = { language, t };
@@ -80,7 +99,7 @@ const App: React.FC = () => {
         
         <div className="flex w-full justify-around md:flex-col md:gap-2 mb-6">
           <NavLink active={currentView === 'dashboard'} onClick={() => setCurrentView('dashboard')} label={t.dashboard} icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>} />
-          <NavLink active={currentView === 'calendar'} onClick={() => setCurrentView('calendar')} label={t.calendar} icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>} />
+          <NavLink active={currentView === 'calendar'} onClick={() => setCurrentView('calendar')} label={t.calendar} icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z" /></svg>} />
           <NavLink active={currentView === 'tutorial'} onClick={() => setCurrentView('tutorial')} label={t.viewDemo} icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>} />
           <NavLink active={currentView === 'booking'} onClick={() => setCurrentView('booking')} label={t.publicLink} icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>} />
         </div>
@@ -132,6 +151,12 @@ const App: React.FC = () => {
               <LangBtn active={language === 'en'} onClick={() => setLanguage('en')} flag="🇺🇸" />
               <LangBtn active={language === 'es'} onClick={() => setLanguage('es')} flag="🇪🇸" />
            </div>
+           <button 
+            onClick={handleLogout}
+            className="mt-4 text-[10px] font-black text-slate-300 uppercase tracking-widest hover:text-rose-500 text-left px-2 transition-colors"
+           >
+             ← {t.back} para Home
+           </button>
         </div>
       </nav>
 

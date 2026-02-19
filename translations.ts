@@ -3,6 +3,17 @@ export type Language = 'pt' | 'en' | 'es';
 
 export const translations = {
   pt: {
+    heroTitle: "Sua agenda no piloto automático com IA",
+    heroSub: "A plataforma completa para profissionais autônomos reduzirem faltas em até 42% e automatizarem agendamentos via WhatsApp.",
+    startFree: "Começar Teste Grátis",
+    login: "Entrar",
+    feature1Title: "IA de Retenção",
+    feature1Desc: "Nossa IA analisa o comportamento dos seus clientes e envia lembretes persuasivos no momento exato.",
+    feature2Title: "Link de Agendamento",
+    feature2Desc: "Um link profissional para seus clientes agendarem sem você precisar parar o que está fazendo.",
+    feature3Title: "Financeiro Integrado",
+    feature3Desc: "Controle seus ganhos, sessões realizadas e pendências em um painel simplificado.",
+    trustedBy: "Confiado por mais de 5.000 profissionais",
     dashboard: "Painel",
     calendar: "Agenda",
     publicLink: "Link Público",
@@ -55,6 +66,17 @@ export const translations = {
     removeNotes: "Remover Bloco"
   },
   en: {
+    heroTitle: "Your schedule on autopilot with AI",
+    heroSub: "The complete platform for independent professionals to reduce no-shows by up to 42% and automate bookings via WhatsApp.",
+    startFree: "Start Free Trial",
+    login: "Login",
+    feature1Title: "Retention AI",
+    feature1Desc: "Our AI analyzes client behavior and sends persuasive reminders at the perfect time.",
+    feature2Title: "Booking Link",
+    feature2Desc: "A professional link for your clients to book without you having to stop what you're doing.",
+    feature3Title: "Integrated Finance",
+    feature3Desc: "Track your earnings, completed sessions, and pendings in a simplified dashboard.",
+    trustedBy: "Trusted by over 5,000 professionals",
     dashboard: "Dashboard",
     calendar: "Calendar",
     publicLink: "Public Link",
@@ -107,6 +129,17 @@ export const translations = {
     removeNotes: "Remove Block"
   },
   es: {
+    heroTitle: "Tu agenda en piloto automático con IA",
+    heroSub: "La plataforma completa para que profesionales independientes reduzcan inasistencias hasta en un 42% y automatizen citas por WhatsApp.",
+    startFree: "Empezar Prueba Gratis",
+    login: "Entrar",
+    feature1Title: "IA de Retención",
+    feature1Desc: "Nuestra IA analiza el comportamiento de tus clientes y envía recordatorios persuasivos en el momento exacto.",
+    feature2Title: "Link de Citas",
+    feature2Desc: "Un link profesional para que tus clientes reserven sin que tengas que parar lo que estás haciendo.",
+    feature3Title: "Finanzas Integradas",
+    feature3Desc: "Controla tus ganancias, sesiones realizadas y pendientes en un panel simplificado.",
+    trustedBy: "Confiado por más de 5,000 profesionales",
     dashboard: "Panel",
     calendar: "Agenda",
     publicLink: "Link Público",
