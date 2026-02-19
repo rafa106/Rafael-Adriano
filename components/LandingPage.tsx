@@ -47,11 +47,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ t, language, onStart }) => {
           >
             {t.startFree}
           </button>
-          <button 
-            className="w-full sm:w-auto bg-white text-slate-900 border border-slate-200 px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-50 transition-all"
-          >
-            {t.viewDemo}
-          </button>
         </div>
         
         {/* Mockup Preview */}

@@ -9,12 +9,11 @@ interface DashboardProps {
   appointments: Appointment[];
   professional: Professional;
   onUpgrade: () => void;
-  onViewDemo: () => void;
   language: Language;
   t: any;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ appointments, professional, onUpgrade, onViewDemo, language, t }) => {
+const Dashboard: React.FC<DashboardProps> = ({ appointments, professional, onUpgrade, language, t }) => {
   const [aiData, setAiData] = useState<any>(null);
   const [loadingAi, setLoadingAi] = useState(false);
 
@@ -72,12 +71,6 @@ const Dashboard: React.FC<DashboardProps> = ({ appointments, professional, onUpg
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-            <button 
-              onClick={onViewDemo}
-              className="w-full sm:w-auto bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center gap-3 justify-center"
-            >
-              <span className="text-xl">🎬</span> {t.viewDemo}
-            </button>
             <button 
               onClick={onUpgrade}
               className="w-full sm:w-auto bg-white text-slate-900 px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all"
