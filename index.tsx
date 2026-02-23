@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './index.css';
 
 // Log de diagnóstico
 console.log("AgendaAuto: Iniciando aplicação...");
@@ -24,7 +25,7 @@ if (!rootElement) {
       <div style="padding: 20px; font-family: sans-serif; color: #721c24; background: #f8d7da; border-radius: 8px; margin: 20px;">
         <h3>Erro ao carregar aplicação</h3>
         <p>Ocorreu um erro técnico impedindo o carregamento do AgendaAuto.</p>
-        <pre style="font-size: 12px; overflow: auto;">${error.message}</pre>
+        <pre style="font-size: 12px; overflow: auto;">${(error as Error).message}</pre>
         <p><small>Verifique o console do desenvolvedor (F12) para mais detalhes.</small></p>
       </div>
     `;

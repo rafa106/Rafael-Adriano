@@ -6,8 +6,13 @@ import { Language } from "../translations";
 const getApiKey = () => {
   // Tenta obter a chave de várias fontes possíveis em ambientes de build/browser
   try {
-    if (typeof process !== 'undefined' && process.env?.API_KEY) return process.env.API_KEY;
+    if (typeof process !== 'undefined') {
+      if (process.env?.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;
+      if (process.env?.API_KEY) return process.env.API_KEY;
+    }
     // @ts-ignore - Caso esteja usando variáveis de ambiente do Vite no Netlify
+    if (import.meta.env?.VITE_GEMINI_API_KEY) return import.meta.env.VITE_GEMINI_API_KEY;
+    // @ts-ignore
     if (import.meta.env?.VITE_API_KEY) return import.meta.env.VITE_API_KEY;
     return "";
   } catch {

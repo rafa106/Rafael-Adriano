@@ -94,7 +94,7 @@ const TutorialVideo: React.FC<TutorialVideoProps> = ({ t, onBack }) => {
       }
     } catch (error) {
       console.error("Error generating video:", error);
-      if (error.message?.includes("Requested entity was not found")) {
+      if ((error as any).message?.includes("Requested entity was not found")) {
         setNeedsKey(true);
       }
     } finally {

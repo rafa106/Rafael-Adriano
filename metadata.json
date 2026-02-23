@@ -1,6 +1,6 @@
 {
-  "name": "AgendaAuto - Gestão Inteligente para Autônomos",
-  "description": "Uma plataforma SaaS completa para profissionais autônomos automatizarem seus agendamentos, reduzirem faltas e gerenciarem finanças com auxílio de IA.",
+  "name": "AgendaAuto - Gestão Inteligente & Automação para Autônomos",
+  "description": "A plataforma definitiva para profissionais liberais. Automatize agendamentos via WhatsApp, reduza faltas com IA e gerencie suas finanças em um só lugar. Disponível para Web, Desktop e Mobile.",
   "requestFramePermissions": [
     "camera",
     "microphone"

@@ -1,5 +1,20 @@
 
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  LayoutDashboard, 
+  Calendar as CalendarIcon, 
+  Link as LinkIcon, 
+  Settings as SettingsIcon, 
+  LogOut, 
+  Download, 
+  Trash2, 
+  X, 
+  Plus,
+  Globe,
+  Smartphone,
+  Monitor
+} from 'lucide-react';
 import { Appointment, AppointmentStatus, Professional } from './types';
 import { MOCK_PROFESSIONAL, MOCK_APPOINTMENTS } from './constants';
 import { Language, translations } from './translations';
@@ -13,9 +28,7 @@ import LandingPage from './components/LandingPage';
 type View = 'landing' | 'dashboard' | 'calendar' | 'settings' | 'booking' | 'pricing';
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<View>(() => {
-    return (localStorage.getItem('agenda_auto_logged') === 'true') ? 'dashboard' : 'landing';
-  });
+  const [currentView, setCurrentView] = useState<View>('landing');
   
   const [language, setLanguage] = useState<Language>('pt');
   const [appointments, setAppointments] = useState<Appointment[]>(MOCK_APPOINTMENTS as Appointment[]);
@@ -27,6 +40,8 @@ const App: React.FC = () => {
     const saved = localStorage.getItem('agenda_auto_show_notes');
     return saved === null ? true : saved === 'true';
   });
+
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
 
   const t = translations[language];
 
@@ -50,9 +65,6 @@ const App: React.FC = () => {
 
   const handleAddAppointment = (apt: Appointment) => {
     setAppointments(prev => [...prev, apt]);
-    if (currentView === 'calendar') {
-      setCurrentView('calendar');
-    }
   };
 
   const handleLogout = () => {
@@ -83,85 +95,179 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-slate-50 selection:bg-violet-200">
+    <div className="min-h-screen flex flex-col md:flex-row bg-slate-50 selection:bg-violet-200 font-sans">
       {/* Sidebar Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-slate-200 p-2 flex justify-around md:relative md:flex-col md:w-64 md:border-r md:border-t-0 md:p-6 z-50 overflow-y-auto">
-        <div className="hidden md:block mb-8 px-2">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-8 h-8 bg-gradient-to-tr from-violet-600 to-fuchsia-500 rounded-lg shadow-lg shadow-violet-200"></div>
-            <h1 className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-fuchsia-600">AgendaAuto</h1>
+      <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-200 p-2 flex justify-around md:relative md:flex-col md:w-72 md:border-r md:border-t-0 md:p-8 z-50 overflow-y-auto">
+        <div className="hidden md:block mb-10">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 bg-gradient-to-tr from-violet-600 to-fuchsia-500 rounded-xl shadow-lg shadow-violet-200"></div>
+            <h1 className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-fuchsia-600 tracking-tight">AgendaAuto</h1>
           </div>
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Global SaaS Engine</p>
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Global SaaS Engine</p>
         </div>
         
-        <div className="flex w-full justify-around md:flex-col md:gap-2 mb-6">
-          <NavLink active={currentView === 'dashboard'} onClick={() => setCurrentView('dashboard')} label={t.dashboard} icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>} />
-          <NavLink active={currentView === 'calendar'} onClick={() => setCurrentView('calendar')} label={t.calendar} icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z" /></svg>} />
-          <NavLink active={currentView === 'booking'} onClick={() => setCurrentView('booking')} label={t.publicLink} icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>} />
-          <NavLink active={currentView === 'settings'} onClick={() => setCurrentView('settings')} label={t.settings} icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>} />
+        <div className="flex w-full justify-around md:flex-col md:gap-2 mb-8">
+          <NavLink active={currentView === 'dashboard'} onClick={() => setCurrentView('dashboard')} label={t.dashboard} icon={<LayoutDashboard className="w-5 h-5" />} />
+          <NavLink active={currentView === 'calendar'} onClick={() => setCurrentView('calendar')} label={t.calendar} icon={<CalendarIcon className="w-5 h-5" />} />
+          <NavLink active={currentView === 'booking'} onClick={() => setCurrentView('booking')} label={t.publicLink} icon={<LinkIcon className="w-5 h-5" />} />
+          <NavLink active={currentView === 'settings'} onClick={() => setCurrentView('settings')} label={t.settings} icon={<SettingsIcon className="w-5 h-5" />} />
         </div>
 
         {/* Professional Notepad Block */}
-        {showNotesBlock && (
-          <div className="hidden md:block mb-8 px-2 animate-in fade-in duration-500">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.notes}</p>
-              <div className="flex gap-2">
-                <button 
-                  onClick={() => setNotes('')}
-                  title={t.clearNotes}
-                  className="text-[9px] font-bold text-slate-300 hover:text-rose-500 transition-colors"
-                >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                </button>
-                <button 
-                  onClick={() => setShowNotesBlock(false)}
-                  title={t.removeNotes}
-                  className="text-[9px] font-bold text-slate-300 hover:text-slate-500 transition-colors"
-                >
-                  ✕
-                </button>
+        <AnimatePresence>
+          {showNotesBlock && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="hidden md:block mb-10"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.notes}</p>
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => setNotes('')}
+                    title={t.clearNotes}
+                    className="text-slate-300 hover:text-rose-500 transition-colors"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                  <button 
+                    onClick={() => setShowNotesBlock(false)}
+                    title={t.removeNotes}
+                    className="text-slate-300 hover:text-slate-500 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
-            </div>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder={t.notesPlaceholder}
-              className="w-full h-32 p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium text-slate-600 focus:ring-2 focus:ring-violet-200 outline-none resize-none transition-all placeholder:text-slate-300"
-            />
-          </div>
-        )}
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder={t.notesPlaceholder}
+                className="w-full h-36 p-4 bg-slate-50 border border-slate-100 rounded-2xl text-xs font-medium text-slate-600 focus:ring-2 focus:ring-violet-200 outline-none resize-none transition-all placeholder:text-slate-300 shadow-inner"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Controls and Language */}
-        <div className="hidden md:flex flex-col gap-2 mt-auto pt-6 border-t border-slate-100">
+        <div className="hidden md:flex flex-col gap-6 mt-auto pt-8 border-t border-slate-100">
            {!showNotesBlock && (
              <button 
               onClick={() => setShowNotesBlock(true)}
-              className="mb-4 text-[10px] font-black text-violet-500 uppercase tracking-widest hover:text-violet-600 text-left px-2"
+              className="group flex items-center gap-2 text-[10px] font-black text-violet-500 uppercase tracking-widest hover:text-violet-600 transition-colors"
              >
-               + {t.notes}
+               <Plus className="w-3 h-3 group-hover:rotate-90 transition-transform" />
+               {t.notes}
              </button>
            )}
-           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-2">Language</p>
-           <div className="flex gap-2 px-2">
-              <LangBtn active={language === 'pt'} onClick={() => setLanguage('pt')} flag="🇧🇷" />
-              <LangBtn active={language === 'en'} onClick={() => setLanguage('en')} flag="🇺🇸" />
-              <LangBtn active={language === 'es'} onClick={() => setLanguage('es')} flag="🇪🇸" />
+           
+           <div>
+             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Language</p>
+             <div className="flex gap-2">
+                <LangBtn active={language === 'pt'} onClick={() => setLanguage('pt')} flag="🇧🇷" />
+                <LangBtn active={language === 'en'} onClick={() => setLanguage('en')} flag="🇺🇸" />
+                <LangBtn active={language === 'es'} onClick={() => setLanguage('es')} flag="🇪🇸" />
+             </div>
            </div>
+
+           <button 
+            onClick={() => setShowDownloadModal(true)}
+            className="flex items-center gap-3 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-violet-600 transition-colors group"
+           >
+             <Download className="w-4 h-4 group-hover:bounce" />
+             {t.downloadApp}
+           </button>
+
            <button 
             onClick={handleLogout}
-            className="mt-4 text-[10px] font-black text-slate-300 uppercase tracking-widest hover:text-rose-500 text-left px-2 transition-colors"
+            className="flex items-center gap-3 text-[10px] font-black text-slate-300 uppercase tracking-widest hover:text-rose-500 transition-colors group"
            >
-             ← {t.back} para Home
+             <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+             Sair
            </button>
         </div>
       </nav>
 
-      <main className="flex-1 p-4 md:p-10 pb-24 md:pb-10 bg-slate-50 overflow-y-auto">
+      <main className="flex-1 p-4 md:p-12 pb-24 md:pb-12 bg-slate-50 overflow-y-auto">
         <div className="max-w-7xl mx-auto">
-          {renderView()}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentView}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              {renderView()}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </main>
+
+      {/* Download Modal */}
+      <AnimatePresence>
+        {showDownloadModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowDownloadModal(false)}
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative bg-white rounded-[3rem] p-10 max-w-lg w-full shadow-2xl overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-violet-600/5 rounded-full -mr-10 -mt-10"></div>
+              <button 
+                onClick={() => setShowDownloadModal(false)}
+                className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-violet-100 rounded-2xl flex items-center justify-center text-violet-600 mb-8">
+                  <Download className="w-8 h-8" />
+                </div>
+                <h3 className="text-3xl font-black text-slate-900 mb-4 font-display tracking-tight">{t.downloadApp}</h3>
+                <p className="text-slate-500 font-medium mb-10 leading-relaxed">
+                  {t.downloadDesc}
+                </p>
+
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 p-5 bg-slate-50 rounded-2xl border border-slate-100">
+                    <Smartphone className="w-6 h-6 text-violet-600" />
+                    <div>
+                      <p className="text-sm font-black text-slate-800">{t.installPwa}</p>
+                      <p className="text-xs text-slate-400 font-medium">Abra no Chrome/Safari e selecione "Adicionar à Tela de Início"</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 p-5 bg-slate-50 rounded-2xl border border-slate-100">
+                    <Monitor className="w-6 h-6 text-fuchsia-600" />
+                    <div>
+                      <p className="text-sm font-black text-slate-800">{t.desktopApp}</p>
+                      <p className="text-xs text-slate-400 font-medium">Clique no ícone de instalação na barra de endereços do navegador</p>
+                    </div>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={() => setShowDownloadModal(false)}
+                  className="w-full mt-10 bg-slate-900 text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-violet-600 transition-all"
+                >
+                  Entendido
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -178,7 +284,7 @@ const LangBtn: React.FC<{ active: boolean, onClick: () => void, flag: string }> 
 const NavLink: React.FC<{ active: boolean; onClick: () => void; label: string; icon: React.ReactNode }> = ({ active, onClick, label, icon }) => (
   <button 
     onClick={onClick}
-    className={`flex flex-col md:flex-row items-center gap-3 p-3 rounded-2xl transition-all duration-300 ${active ? 'bg-violet-600 text-white shadow-lg shadow-violet-200' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'}`}
+    className={`flex flex-col md:flex-row items-center gap-4 p-4 rounded-2xl transition-all duration-300 ${active ? 'bg-violet-600 text-white shadow-xl shadow-violet-200' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'}`}
   >
     <div className={`${active ? 'scale-110' : 'scale-100'} transition-transform`}>{icon}</div>
     <span className="text-[10px] md:text-sm font-bold tracking-tight">{label}</span>
