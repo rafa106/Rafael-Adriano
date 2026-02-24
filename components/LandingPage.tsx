@@ -111,66 +111,22 @@ const LandingPage: React.FC<LandingPageProps> = ({ t, language, onStart }) => {
               <Download className="w-5 h-5" />
             </a>
           </motion.div>
-        </div>
 
-        {/* Floating Dashboard Preview */}
-        <motion.div 
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-          className="mt-24 relative max-w-6xl mx-auto px-6"
-        >
-          <div className="relative bg-slate-900 rounded-[3rem] p-4 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] border border-slate-800 transform-gpu perspective-1000">
-            <div className="bg-slate-50 rounded-[2rem] overflow-hidden aspect-[16/9] relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-600/5 to-fuchsia-600/5"></div>
-              {/* Mockup Content */}
-              <div className="p-8 h-full flex flex-col gap-6">
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-4">
-                    <div className="w-32 h-8 bg-slate-200 rounded-lg animate-pulse"></div>
-                    <div className="w-24 h-8 bg-slate-200 rounded-lg animate-pulse"></div>
-                  </div>
-                  <div className="w-10 h-10 bg-slate-200 rounded-full animate-pulse"></div>
-                </div>
-                <div className="grid grid-cols-3 gap-6">
-                  <div className="h-40 bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between">
-                    <div className="w-10 h-10 bg-violet-100 rounded-xl"></div>
-                    <div className="space-y-2">
-                      <div className="w-full h-4 bg-slate-100 rounded"></div>
-                      <div className="w-2/3 h-4 bg-slate-100 rounded"></div>
-                    </div>
-                  </div>
-                  <div className="h-40 bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between">
-                    <div className="w-10 h-10 bg-fuchsia-100 rounded-xl"></div>
-                    <div className="space-y-2">
-                      <div className="w-full h-4 bg-slate-100 rounded"></div>
-                      <div className="w-2/3 h-4 bg-slate-100 rounded"></div>
-                    </div>
-                  </div>
-                  <div className="h-40 bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between">
-                    <div className="w-10 h-10 bg-emerald-100 rounded-xl"></div>
-                    <div className="space-y-2">
-                      <div className="w-full h-4 bg-slate-100 rounded"></div>
-                      <div className="w-2/3 h-4 bg-slate-100 rounded"></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-1 bg-white rounded-[2rem] shadow-sm border border-slate-100 p-8">
-                  <div className="w-48 h-6 bg-slate-200 rounded-lg mb-6"></div>
-                  <div className="space-y-4">
-                    {[1,2,3].map(i => (
-                      <div key={i} className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl">
-                        <div className="w-10 h-10 bg-slate-200 rounded-full"></div>
-                        <div className="flex-1 h-4 bg-slate-200 rounded"></div>
-                        <div className="w-20 h-4 bg-slate-200 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+          {/* New Hero Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-16 max-w-4xl mx-auto rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white group"
+          >
+            <img 
+              src="https://picsum.photos/seed/agenda-hero/1200/600?blur=1" 
+              alt="AgendaAuto Dashboard Preview" 
+              className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+              referrerPolicy="no-referrer"
+            />
+          </motion.div>
+        </div>
       </section>
 
       {/* How It Works */}
@@ -276,22 +232,38 @@ const LandingPage: React.FC<LandingPageProps> = ({ t, language, onStart }) => {
               </div>
             </div>
             
-            <div className="flex justify-center">
-              <div className="relative w-72 h-[580px] bg-slate-800 rounded-[3rem] border-8 border-slate-700 shadow-2xl overflow-hidden">
+            <div className="flex justify-center relative">
+              <div className="absolute -inset-10 bg-gradient-to-tr from-violet-600/30 to-fuchsia-600/30 blur-[80px] -z-10 animate-pulse"></div>
+              <motion.div 
+                initial={{ rotate: -5, y: 20 }}
+                whileInView={{ rotate: 0, y: 0 }}
+                className="relative w-72 h-[580px] bg-slate-800 rounded-[3rem] border-8 border-slate-700 shadow-2xl overflow-hidden group"
+              >
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-700 rounded-b-2xl z-20"></div>
-                <div className="absolute inset-0 bg-slate-50 p-4 pt-10">
-                  <div className="w-full h-full rounded-2xl bg-white shadow-inner p-4 space-y-4">
-                    <div className="w-12 h-12 bg-violet-600 rounded-xl mb-6"></div>
-                    <div className="w-full h-4 bg-slate-100 rounded"></div>
-                    <div className="w-2/3 h-4 bg-slate-100 rounded"></div>
-                    <div className="grid grid-cols-2 gap-2 mt-8">
-                      <div className="h-20 bg-slate-50 rounded-xl"></div>
-                      <div className="h-20 bg-slate-50 rounded-xl"></div>
-                    </div>
-                    <div className="h-40 bg-slate-50 rounded-2xl mt-4"></div>
-                  </div>
+                <img 
+                  src="https://picsum.photos/seed/mobile-app/600/1200" 
+                  alt="App Interface" 
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex items-end p-8">
+                  <p className="text-white font-black text-xl leading-tight">Sua agenda sempre com você.</p>
                 </div>
-              </div>
+              </motion.div>
+              
+              {/* Floating secondary image */}
+              <motion.div
+                initial={{ x: 50, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                className="absolute -right-12 top-1/2 -translate-y-1/2 hidden xl:block w-48 h-48 rounded-3xl overflow-hidden border-4 border-white shadow-2xl rotate-12"
+              >
+                <img 
+                  src="https://picsum.photos/seed/professional/400/400" 
+                  alt="Professional using app" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </motion.div>
             </div>
           </div>
         </div>
