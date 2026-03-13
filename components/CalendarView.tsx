@@ -40,7 +40,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ appointments, onUpdateStatu
     <div className="space-y-8 animate-in slide-in-from-bottom-5 duration-700">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h2 className="text-4xl font-black text-slate-900 tracking-tight">Agenda Interativa</h2>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tight">Agenda Interativa 2026</h2>
           <p className="text-slate-500 font-medium text-lg mt-1">Gestão estratégica de tempo e faturamento.</p>
         </div>
         <div className="flex gap-4">
@@ -106,8 +106,11 @@ const CalendarView: React.FC<CalendarViewProps> = ({ appointments, onUpdateStatu
                   <p className="text-[10px] font-black text-violet-500 uppercase tracking-widest mb-1 opacity-60">
                     {new Date(apt.date).toLocaleDateString('pt-BR', { weekday: 'short' })}
                   </p>
-                  <p className="text-4xl font-black text-slate-900 tracking-tighter">
+                  <p className="text-4xl font-black text-slate-900 tracking-tighter leading-none">
                     {new Date(apt.date).getDate().toString().padStart(2, '0')}
+                  </p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">
+                    2026
                   </p>
                 </div>
                 <div className="w-px h-16 bg-slate-200 hidden sm:block opacity-40"></div>
@@ -206,26 +209,62 @@ const ActionBtn: React.FC<{ label: string; onClick: () => void; active?: boolean
 };
 
 const StatusBadge: React.FC<{ status: AppointmentStatus }> = ({ status }) => {
-    const labels: Record<AppointmentStatus, string> = {
-      [AppointmentStatus.PENDING]: 'Pendente',
-      [AppointmentStatus.CONFIRMED]: 'Confirmado ✓',
-      [AppointmentStatus.COMPLETED]: 'Concluído',
-      [AppointmentStatus.CANCELED]: 'Cancelado',
-      [AppointmentStatus.NO_SHOW]: 'Faltou',
-      [AppointmentStatus.RESCHEDULE_REQUESTED]: 'Reagendar'
+    const config: Record<AppointmentStatus, { label: string, icon: string, desc: string, style: string }> = {
+      [AppointmentStatus.PENDING]: {
+        label: 'Pendente',
+        icon: '⏳',
+        desc: 'Aguardando confirmação do cliente via WhatsApp.',
+        style: 'bg-amber-50 text-amber-600 border-amber-200/50'
+      },
+      [AppointmentStatus.CONFIRMED]: {
+        label: 'Confirmado',
+        icon: '✅',
+        desc: 'Cliente confirmou presença para este horário.',
+        style: 'bg-emerald-500 text-white shadow-lg shadow-emerald-100 border-emerald-400'
+      },
+      [AppointmentStatus.COMPLETED]: {
+        label: 'Concluído',
+        icon: '🏁',
+        desc: 'Atendimento realizado com sucesso.',
+        style: 'bg-slate-900 text-white shadow-lg shadow-slate-200 border-slate-800'
+      },
+      [AppointmentStatus.CANCELED]: {
+        label: 'Cancelado',
+        icon: '🚫',
+        desc: 'Agendamento cancelado pelo cliente ou profissional.',
+        style: 'bg-slate-100 text-slate-400 border-slate-200'
+      },
+      [AppointmentStatus.NO_SHOW]: {
+        label: 'Faltou',
+        icon: '❌',
+        desc: 'O cliente não compareceu ao horário agendado.',
+        style: 'bg-rose-500 text-white shadow-lg shadow-rose-100 border-rose-400'
+      },
+      [AppointmentStatus.RESCHEDULE_REQUESTED]: {
+        label: 'Reagendar',
+        icon: '🔄',
+        desc: 'Cliente solicitou alteração de data ou horário.',
+        style: 'bg-violet-600 text-white shadow-lg shadow-violet-200 border-violet-500 animate-pulse'
+      }
     };
-    const styles: Record<AppointmentStatus, string> = {
-      [AppointmentStatus.PENDING]: 'bg-slate-100 text-slate-500',
-      [AppointmentStatus.CONFIRMED]: 'bg-violet-600 text-white shadow-lg shadow-violet-200',
-      [AppointmentStatus.COMPLETED]: 'bg-emerald-100 text-emerald-700',
-      [AppointmentStatus.CANCELED]: 'bg-slate-200 text-slate-600',
-      [AppointmentStatus.NO_SHOW]: 'bg-rose-100 text-rose-700',
-      [AppointmentStatus.RESCHEDULE_REQUESTED]: 'bg-cyan-100 text-cyan-700 animate-pulse'
-    };
+
+    const { label, icon, desc, style } = config[status];
+
     return (
-      <span className={`text-[9px] font-black px-4 py-2 rounded-full uppercase tracking-widest ${styles[status]}`}>
-        {labels[status]}
-      </span>
+      <div className="relative group/status">
+        <span className={`flex items-center gap-2 text-[9px] font-black px-4 py-2 rounded-xl uppercase tracking-widest border transition-all duration-300 cursor-help ${style}`}>
+          <span className="text-xs">{icon}</span>
+          {label}
+        </span>
+        
+        {/* Tooltip */}
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-48 p-4 bg-slate-900 text-white text-[10px] font-bold rounded-2xl opacity-0 invisible group-hover/status:opacity-100 group-hover/status:visible transition-all duration-300 z-[60] shadow-2xl pointer-events-none border border-white/10">
+          <div className="relative text-center leading-relaxed">
+            {desc}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45 -mt-1 border-r border-b border-white/10"></div>
+          </div>
+        </div>
+      </div>
     );
   };
 

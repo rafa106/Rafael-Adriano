@@ -107,6 +107,19 @@ const Dashboard: React.FC<DashboardProps> = ({ appointments, professional, onUpg
                 </span>
                 {t.activeAutomation}
               </p>
+
+              <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-6">
+                {theme.services.map((service, idx) => (
+                  <motion.div 
+                    key={idx}
+                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.2)' }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/5 text-[10px] font-black uppercase tracking-wider"
+                  >
+                    <span className="text-sm">{service.icon}</span>
+                    <span>{service.name}</span>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -121,7 +134,7 @@ const Dashboard: React.FC<DashboardProps> = ({ appointments, professional, onUpg
         </div>
 
         <div className="relative z-10 mt-16 grid grid-cols-2 md:grid-cols-4 gap-10 pt-12 border-t border-white/10">
-          <QuickStat label={t.revenue} value={`${t.currency} ${totalRevenue}`} icon={<TrendingUp className="w-4 h-4 opacity-50" />} />
+          <QuickStat label={`${t.revenue} 2026`} value={`${t.currency} ${totalRevenue}`} icon={<TrendingUp className="w-4 h-4 opacity-50" />} />
           <QuickStat label={t.confirmation} value={`${confirmationRate.toFixed(0)}%`} icon={<CheckCircle2 className="w-4 h-4 opacity-50" />} />
           <QuickStat label={t.atRisk} value={atRisk.length.toString()} icon={<AlertCircle className="w-4 h-4 opacity-50" />} />
           <QuickStat label={t.savings} value="15h" icon={<Clock className="w-4 h-4 opacity-50" />} />
@@ -201,7 +214,11 @@ const Dashboard: React.FC<DashboardProps> = ({ appointments, professional, onUpg
         </motion.div>
 
         {/* Attention Card */}
-        <motion.div variants={item} className="bg-white rounded-[3rem] p-12 shadow-sm border border-slate-100 hover:shadow-2xl transition-all duration-500">
+        <motion.div 
+          variants={item} 
+          whileHover={{ y: -5 }}
+          className="bg-white rounded-[3rem] p-12 shadow-sm border border-slate-100 hover:shadow-2xl hover:border-rose-100 transition-all duration-500"
+        >
           <div className="flex items-center justify-between mb-12">
             <h3 className="text-2xl font-black text-slate-900 tracking-tight font-display">{t.attentionNeeded}</h3>
             <span className="text-xs font-black text-rose-600 bg-rose-50 px-5 py-2.5 rounded-2xl uppercase tracking-widest">{atRisk.length}</span>

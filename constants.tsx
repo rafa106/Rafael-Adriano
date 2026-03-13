@@ -12,42 +12,72 @@ export const COLORS = {
   info: 'cyan-400'
 };
 
-export const PROFESSION_THEMES: Record<string, { gradient: string, badge: string, icon: string, shadow: string }> = {
+export const PROFESSION_THEMES: Record<string, { gradient: string, badge: string, icon: string, shadow: string, services: { name: string, icon: string }[] }> = {
   'Psicóloga': {
     gradient: 'from-violet-600 to-indigo-600',
     badge: 'bg-violet-100 text-violet-700',
     icon: '🧠',
-    shadow: 'shadow-violet-200'
+    shadow: 'shadow-violet-200',
+    services: [
+      { name: 'Terapia Individual', icon: '🗣️' },
+      { name: 'Avaliação Psicológica', icon: '📝' },
+      { name: 'Terapia de Casal', icon: '💑' }
+    ]
   },
   'Psicólogo': {
     gradient: 'from-violet-600 to-indigo-600',
     badge: 'bg-violet-100 text-violet-700',
     icon: '🧠',
-    shadow: 'shadow-violet-200'
+    shadow: 'shadow-violet-200',
+    services: [
+      { name: 'Terapia Individual', icon: '🗣️' },
+      { name: 'Avaliação Psicológica', icon: '📝' },
+      { name: 'Terapia de Casal', icon: '💑' }
+    ]
   },
   'Advogado': {
     gradient: 'from-slate-800 to-slate-900',
     badge: 'bg-slate-100 text-slate-700',
     icon: '⚖️',
-    shadow: 'shadow-slate-300'
+    shadow: 'shadow-slate-300',
+    services: [
+      { name: 'Consultoria Jurídica', icon: '⚖️' },
+      { name: 'Elaboração de Contratos', icon: '📜' },
+      { name: 'Defesa em Juízo', icon: '🏛️' }
+    ]
   },
   'Personal Trainer': {
     gradient: 'from-orange-500 to-red-600',
     badge: 'bg-orange-100 text-orange-700',
     icon: '💪',
-    shadow: 'shadow-orange-200'
+    shadow: 'shadow-orange-200',
+    services: [
+      { name: 'Treino Funcional', icon: '🏋️‍♂️' },
+      { name: 'Consultoria Online', icon: '💻' },
+      { name: 'Avaliação Física', icon: '📏' }
+    ]
   },
   'Dentista': {
     gradient: 'from-cyan-500 to-blue-600',
     badge: 'bg-cyan-100 text-cyan-700',
     icon: '🦷',
-    shadow: 'shadow-cyan-200'
+    shadow: 'shadow-cyan-200',
+    services: [
+      { name: 'Limpeza Dental', icon: '🦷' },
+      { name: 'Clareamento', icon: '✨' },
+      { name: 'Implantes', icon: '🛠️' }
+    ]
   },
   'Esteticista': {
     gradient: 'from-rose-400 to-fuchsia-500',
     badge: 'bg-rose-100 text-rose-700',
     icon: '✨',
-    shadow: 'shadow-rose-200'
+    shadow: 'shadow-rose-200',
+    services: [
+      { name: 'Limpeza de Pele', icon: '💆‍♀️' },
+      { name: 'Drenagem Linfática', icon: '🌊' },
+      { name: 'Massagem Relaxante', icon: '🕯️' }
+    ]
   }
 };
 
@@ -55,7 +85,11 @@ export const DEFAULT_THEME = {
   gradient: 'from-violet-600 to-fuchsia-600',
   badge: 'bg-violet-100 text-violet-700',
   icon: '💼',
-  shadow: 'shadow-violet-200'
+  shadow: 'shadow-violet-200',
+  services: [
+    { name: 'Consultoria Geral', icon: '💼' },
+    { name: 'Atendimento Online', icon: '🌐' }
+  ]
 };
 
 export const WEEK_DAYS = [
@@ -73,7 +107,9 @@ export const MOCK_PROFESSIONAL = {
     start: '08:00',
     end: '18:00',
     days: [1, 2, 3, 4, 5]
-  }
+  },
+  whatsappBookingEnabled: true,
+  whatsappBookingMessage: 'Olá Dra. Beatriz, gostaria de agendar uma consulta para o dia {date} às {time}. Meu nome é {name}.'
 };
 
 export const MOCK_APPOINTMENTS = [

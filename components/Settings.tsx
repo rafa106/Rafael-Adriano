@@ -34,6 +34,10 @@ const Settings: React.FC<SettingsProps> = ({ professional, onViewPricing, t }) =
               <input type="text" defaultValue={professional.profession} className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-medium focus:ring-2 focus:ring-violet-500 focus:bg-white transition-all outline-none" />
             </div>
             <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">E-mail</label>
+              <input type="email" defaultValue={professional.email} className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-medium focus:ring-2 focus:ring-violet-500 focus:bg-white transition-all outline-none" />
+            </div>
+            <div>
               <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">{t.sessionValue} ({t.currency})</label>
               <input type="number" defaultValue={professional.sessionValue} className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-medium focus:ring-2 focus:ring-violet-500 focus:bg-white transition-all outline-none" />
             </div>
@@ -92,17 +96,34 @@ const Settings: React.FC<SettingsProps> = ({ professional, onViewPricing, t }) =
         <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 space-y-6">
           <h3 className="font-black text-lg flex items-center gap-3">
             <span className="p-2.5 bg-fuchsia-50 text-fuchsia-600 rounded-xl">📲</span> 
-            {t.pt ? 'Automação WhatsApp' : (t.es ? 'Automatización WhatsApp' : 'WhatsApp Automation')}
+            {t.pt ? 'Agendamento via WhatsApp' : (t.es ? 'Agendamiento vía WhatsApp' : 'WhatsApp Scheduling')}
           </h3>
-          <div className="space-y-4">
-             <div className="p-4 bg-slate-50 rounded-2xl flex items-center justify-between border border-slate-100">
+          <div className="space-y-6">
+             <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
                 <div>
-                  <p className="font-black text-xs uppercase tracking-tight">{t.confirmation} 1-Clique</p>
-                  <p className="text-[10px] font-medium text-slate-500">{t.pt ? 'Botões interativos da API Business' : (t.es ? 'Botones interactivos de API Business' : 'Interactive Business API Buttons')}</p>
+                  <p className="font-black text-xs uppercase tracking-tight">{t.pt ? 'Ativar Link de WhatsApp' : 'Enable WhatsApp Link'}</p>
+                  <p className="text-[10px] font-medium text-slate-500">{t.pt ? 'Redireciona o cliente para o seu WhatsApp após o agendamento' : 'Redirects client to your WhatsApp after booking'}</p>
                 </div>
-                <div className="w-10 h-5 bg-emerald-500 rounded-full flex items-center px-1">
-                  <div className="w-3 h-3 bg-white rounded-full ml-auto"></div>
-                </div>
+                <button className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors ${professional.whatsappBookingEnabled ? 'bg-emerald-500' : 'bg-slate-300'}`}>
+                  <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${professional.whatsappBookingEnabled ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                </button>
+             </div>
+
+             <div>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">{t.pt ? 'Seu Número WhatsApp' : 'Your WhatsApp Number'}</label>
+                <input type="text" defaultValue={professional.whatsapp} className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-medium focus:ring-2 focus:ring-violet-500 transition-all outline-none" placeholder="Ex: 5511999999999" />
+             </div>
+
+             <div>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">{t.pt ? 'Mensagem Padrão' : 'Default Message'}</label>
+                <textarea 
+                  defaultValue={professional.whatsappBookingMessage} 
+                  className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-medium focus:ring-2 focus:ring-violet-500 transition-all outline-none h-24 resize-none"
+                  placeholder="Use {date}, {time} e {name} como variáveis."
+                />
+                <p className="text-[10px] text-slate-400 mt-2 font-medium italic">
+                  {t.pt ? 'Variáveis disponíveis: {date}, {time}, {name}' : 'Available variables: {date}, {time}, {name}'}
+                </p>
              </div>
           </div>
         </section>

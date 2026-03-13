@@ -22,6 +22,8 @@ export interface Professional {
   whatsapp: string;
   email: string;
   workingHours: WorkingHours;
+  whatsappBookingEnabled: boolean;
+  whatsappBookingMessage: string;
 }
 
 export interface Appointment {

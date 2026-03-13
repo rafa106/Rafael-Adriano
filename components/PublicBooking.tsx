@@ -33,6 +33,24 @@ const PublicBooking: React.FC<PublicBookingProps> = ({ professional, onBook }) =
 
     onBook(newApt);
     setStep(3);
+
+    // WhatsApp Redirection Logic
+    if (professional.whatsappBookingEnabled && professional.whatsapp) {
+      const formattedDate = selectedDate.split('-').reverse().join('/');
+      let message = professional.whatsappBookingMessage || 'Olá, gostaria de agendar uma consulta.';
+      message = message
+        .replace('{date}', formattedDate)
+        .replace('{time}', selectedTime)
+        .replace('{name}', clientInfo.name);
+      
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/${professional.whatsapp}?text=${encodedMessage}`;
+      
+      // Delay slightly to let the success screen show first
+      setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+      }, 1500);
+    }
   };
 
   return (

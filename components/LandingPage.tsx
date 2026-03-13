@@ -317,7 +317,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ t, language, onStart }) => {
             <a href="#" className="hover:text-violet-600 transition-colors">Suporte</a>
           </div>
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-            &copy; 2024 AgendaAuto - Global SaaS Engine
+            &copy; 2026 AgendaAuto - Global SaaS Engine
           </p>
         </div>
       </footer>
