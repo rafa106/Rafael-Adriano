@@ -13,7 +13,8 @@ import {
   Plus,
   Globe,
   Smartphone,
-  Monitor
+  Monitor,
+  Users
 } from 'lucide-react';
 import { Appointment, AppointmentStatus, Professional } from './types';
 import { MOCK_PROFESSIONAL, MOCK_APPOINTMENTS } from './constants';
@@ -24,8 +25,9 @@ import PublicBooking from './components/PublicBooking';
 import Settings from './components/Settings';
 import Pricing from './components/Pricing';
 import LandingPage from './components/LandingPage';
+import Affiliate from './components/Affiliate';
 
-type View = 'landing' | 'dashboard' | 'calendar' | 'settings' | 'booking' | 'pricing';
+type View = 'landing' | 'dashboard' | 'calendar' | 'settings' | 'booking' | 'pricing' | 'affiliate';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('landing');
@@ -89,6 +91,8 @@ const App: React.FC = () => {
         return <PublicBooking professional={professional} onBook={handleAddAppointment} {...commonProps} />;
       case 'pricing':
         return <Pricing onBack={() => setCurrentView('dashboard')} {...commonProps} />;
+      case 'affiliate':
+        return <Affiliate {...commonProps} />;
       default:
         return <Dashboard appointments={appointments} professional={professional} onUpgrade={() => setCurrentView('pricing')} {...commonProps} />;
     }
@@ -110,6 +114,7 @@ const App: React.FC = () => {
           <NavLink active={currentView === 'dashboard'} onClick={() => setCurrentView('dashboard')} label={t.dashboard} icon={<LayoutDashboard className="w-5 h-5" />} />
           <NavLink active={currentView === 'calendar'} onClick={() => setCurrentView('calendar')} label={t.calendar} icon={<CalendarIcon className="w-5 h-5" />} />
           <NavLink active={currentView === 'booking'} onClick={() => setCurrentView('booking')} label={t.publicLink} icon={<LinkIcon className="w-5 h-5" />} />
+          <NavLink active={currentView === 'affiliate'} onClick={() => setCurrentView('affiliate')} label={t.affiliate} icon={<Users className="w-5 h-5" />} />
           <NavLink active={currentView === 'settings'} onClick={() => setCurrentView('settings')} label={t.settings} icon={<SettingsIcon className="w-5 h-5" />} />
         </div>
 
