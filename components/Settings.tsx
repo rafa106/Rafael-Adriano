@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Professional } from '../types';
-import { WEEK_DAYS } from '../constants';
+import { WEEK_DAYS, PROFESSION_THEMES } from '../constants';
+import CalendarSync from './CalendarSync';
 
 interface SettingsProps {
   professional: Professional;
@@ -10,6 +11,8 @@ interface SettingsProps {
 }
 
 const Settings: React.FC<SettingsProps> = ({ professional, onViewPricing, t }) => {
+  const professions = Object.keys(PROFESSION_THEMES).sort();
+
   return (
     <div className="max-w-4xl space-y-8 pb-10">
       <div>
@@ -31,7 +34,16 @@ const Settings: React.FC<SettingsProps> = ({ professional, onViewPricing, t }) =
             </div>
             <div>
               <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">{t.profession}</label>
-              <input type="text" defaultValue={professional.profession} className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-medium focus:ring-2 focus:ring-violet-500 focus:bg-white transition-all outline-none" />
+              <select 
+                defaultValue={professional.profession} 
+                className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-bold text-slate-700 focus:ring-2 focus:ring-violet-500 focus:bg-white transition-all outline-none appearance-none"
+              >
+                {professions.map(prof => (
+                  <option key={prof} value={prof}>
+                    {PROFESSION_THEMES[prof].icon} {prof}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">E-mail</label>
@@ -40,6 +52,28 @@ const Settings: React.FC<SettingsProps> = ({ professional, onViewPricing, t }) =
             <div>
               <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">{t.sessionValue} ({t.currency})</label>
               <input type="number" defaultValue={professional.sessionValue} className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-medium focus:ring-2 focus:ring-violet-500 focus:bg-white transition-all outline-none" />
+            </div>
+          </div>
+        </section>
+
+        {/* External Integrations */}
+        <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 space-y-6">
+          <h3 className="font-black text-lg flex items-center gap-3">
+            <span className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl">🔌</span> 
+            {t.pt ? 'Integrações Externas' : (t.es ? 'Integraciones Externas' : 'External Integrations')}
+          </h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Google AdSense ID</label>
+              <input 
+                type="text" 
+                defaultValue={professional.adsenseId} 
+                className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-medium focus:ring-2 focus:ring-violet-500 focus:bg-white transition-all outline-none" 
+                placeholder="ca-pub-XXXXXXXXXXXXXXXX"
+              />
+              <p className="text-[10px] text-slate-400 mt-2 font-medium italic">
+                {t.pt ? 'Insira seu ID de editor do AdSense para monetizar sua página de agendamento.' : 'Enter your AdSense publisher ID to monetize your booking page.'}
+              </p>
             </div>
           </div>
         </section>
@@ -91,6 +125,9 @@ const Settings: React.FC<SettingsProps> = ({ professional, onViewPricing, t }) =
             </div>
           </div>
         </section>
+
+        {/* Calendar Sync Section */}
+        <CalendarSync t={t} />
 
         {/* WhatsApp Automation Section */}
         <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 space-y-6">

@@ -24,6 +24,7 @@ export interface Professional {
   workingHours: WorkingHours;
   whatsappBookingEnabled: boolean;
   whatsappBookingMessage: string;
+  adsenseId?: string;
 }
 
 export interface Appointment {

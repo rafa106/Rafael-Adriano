@@ -75,7 +75,7 @@ const App: React.FC = () => {
   };
 
   if (currentView === 'landing') {
-    return <LandingPage t={t} language={language} onStart={() => setCurrentView('dashboard')} />;
+    return <LandingPage t={t} language={language} professional={professional} onStart={() => setCurrentView('dashboard')} />;
   }
 
   const renderView = () => {

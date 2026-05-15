@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
 import { Professional, Appointment, AppointmentStatus } from '../types';
+import AdSense from './AdSense';
+import { PROFESSION_THEMES, DEFAULT_THEME } from '../constants';
 
 interface PublicBookingProps {
   professional: Professional;
@@ -12,6 +14,9 @@ const PublicBooking: React.FC<PublicBookingProps> = ({ professional, onBook }) =
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [clientInfo, setClientInfo] = useState({ name: '', phone: '' });
+
+  const professionKey = Object.keys(PROFESSION_THEMES).find(key => professional.profession.includes(key)) || '';
+  const theme = PROFESSION_THEMES[professionKey] || DEFAULT_THEME;
 
   const slots = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'];
 
@@ -55,18 +60,19 @@ const PublicBooking: React.FC<PublicBookingProps> = ({ professional, onBook }) =
 
   return (
     <div className="max-w-xl mx-auto bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 animate-in fade-in zoom-in duration-500">
-      <div className="bg-gradient-to-br from-violet-600 to-fuchsia-600 p-10 text-white text-center">
+      <div className={`bg-gradient-to-br ${theme.gradient} p-10 text-white text-center relative overflow-hidden`}>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
         <div className="relative inline-block mb-6">
-          <div className="w-24 h-24 bg-white/20 backdrop-blur-md rounded-3xl mx-auto flex items-center justify-center text-4xl border border-white/30 shadow-2xl">
-            👤
+          <div className="w-24 h-24 bg-white/20 backdrop-blur-md rounded-3xl mx-auto flex items-center justify-center text-4xl border border-white/30 shadow-2xl transition-transform hover:rotate-6">
+            {theme.icon}
           </div>
-          <div className="absolute -bottom-2 -right-2 bg-emerald-400 w-8 h-8 rounded-full border-4 border-violet-600 flex items-center justify-center text-[10px] text-white font-bold animate-pulse">
+          <div className="absolute -bottom-2 -right-2 bg-emerald-400 w-8 h-8 rounded-full border-4 border-black/10 flex items-center justify-center text-[10px] text-white font-bold animate-pulse">
             ON
           </div>
         </div>
-        <h2 className="text-2xl font-black tracking-tight">{professional.name}</h2>
-        <p className="text-violet-100 font-medium opacity-80">{professional.profession}</p>
-        <div className="mt-6 inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-6 py-2 rounded-2xl text-xs font-black uppercase tracking-widest border border-white/20">
+        <h2 className="text-2xl font-black tracking-tight drop-shadow-sm">{professional.name}</h2>
+        <p className="text-white/80 font-bold text-sm tracking-wide mt-1 uppercase">{professional.profession}</p>
+        <div className="mt-6 inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-2 rounded-2xl text-xs font-black uppercase tracking-widest border border-white/20">
           R$ {professional.sessionValue} / sessão
         </div>
       </div>
@@ -82,7 +88,8 @@ const PublicBooking: React.FC<PublicBookingProps> = ({ professional, onBook }) =
               <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Data da Consulta</label>
               <input 
                 type="date" 
-                className="w-full p-5 rounded-2xl border border-slate-100 bg-slate-50 font-bold text-slate-700 focus:ring-4 focus:ring-violet-500/10 focus:bg-white outline-none transition-all"
+                className="w-full p-5 rounded-2xl border border-slate-100 bg-slate-50 font-bold text-slate-700 focus:ring-4 focus:ring-opacity-10 outline-none transition-all"
+                style={{ '--tw-ring-color': theme.gradient.split(' ')[1].replace('to-', '') } as any}
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 min={new Date().toISOString().split('T')[0]}
@@ -92,22 +99,27 @@ const PublicBooking: React.FC<PublicBookingProps> = ({ professional, onBook }) =
               <div className="space-y-4 animate-in slide-in-from-top-4 duration-300">
                 <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Horários Disponíveis</label>
                 <div className="grid grid-cols-3 gap-3">
-                  {slots.map(s => (
-                    <button 
-                      key={s}
-                      onClick={() => setSelectedTime(s)}
-                      className={`p-4 rounded-2xl border-2 font-black text-sm transition-all ${selectedTime === s ? 'bg-violet-600 text-white border-violet-600 shadow-xl shadow-violet-200 scale-105' : 'bg-white text-slate-600 border-slate-100 hover:border-violet-200'}`}
-                    >
-                      {s}
-                    </button>
-                  ))}
+                  {slots.map(s => {
+                    const isSelected = selectedTime === s;
+                    return (
+                      <button 
+                        key={s}
+                        onClick={() => setSelectedTime(s)}
+                        className={`p-4 rounded-2xl border-2 font-black text-sm transition-all ${isSelected ? `bg-slate-900 text-white border-slate-900 shadow-xl scale-105` : 'bg-white text-slate-600 border-slate-100 hover:border-slate-300'}`}
+                        style={isSelected ? { background: theme.gradient.includes('slate') ? undefined : `linear-gradient(to bottom right, ${theme.gradient.split(' ')[1].replace('from-', '')}, ${theme.gradient.split(' ')[2].replace('to-', '')})` } : {}}
+                      >
+                        {s}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
             <button 
               disabled={!selectedDate || !selectedTime}
               onClick={() => setStep(2)}
-              className="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl hover:bg-violet-600 hover:scale-[1.02] active:scale-95 disabled:opacity-30 disabled:hover:bg-slate-900 disabled:scale-100 transition-all"
+              className="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl hover:scale-[1.02] active:scale-95 disabled:opacity-30 disabled:hover:bg-slate-900 disabled:scale-100 transition-all"
+              style={(!selectedDate || !selectedTime) ? {} : { background: `linear-gradient(to right, ${theme.gradient.split(' ')[1].replace('from-', '')}, ${theme.gradient.split(' ')[2].replace('to-', '')})` }}
             >
               Próximo Passo →
             </button>
@@ -126,7 +138,8 @@ const PublicBooking: React.FC<PublicBookingProps> = ({ professional, onBook }) =
                 <input 
                   type="text" 
                   placeholder="Ex: João Silva"
-                  className="w-full p-5 rounded-2xl border border-slate-100 bg-slate-50 font-bold text-slate-700 outline-none focus:ring-4 focus:ring-violet-500/10 focus:bg-white transition-all"
+                  className="w-full p-5 rounded-2xl border border-slate-100 bg-slate-50 font-bold text-slate-700 outline-none focus:ring-4 focus:ring-opacity-10 transition-all"
+                  style={{ '--tw-ring-color': theme.gradient.split(' ')[1].replace('from-', '') } as any}
                   value={clientInfo.name}
                   onChange={(e) => setClientInfo(prev => ({ ...prev, name: e.target.value }))}
                 />
@@ -136,16 +149,17 @@ const PublicBooking: React.FC<PublicBookingProps> = ({ professional, onBook }) =
                 <input 
                   type="tel" 
                   placeholder="(00) 00000-0000"
-                  className="w-full p-5 rounded-2xl border border-slate-100 bg-slate-50 font-bold text-slate-700 outline-none focus:ring-4 focus:ring-violet-500/10 focus:bg-white transition-all"
+                  className="w-full p-5 rounded-2xl border border-slate-100 bg-slate-50 font-bold text-slate-700 outline-none focus:ring-4 focus:ring-opacity-10 transition-all"
+                  style={{ '--tw-ring-color': theme.gradient.split(' ')[1].replace('from-', '') } as any}
                   value={clientInfo.phone}
                   onChange={(e) => setClientInfo(prev => ({ ...prev, phone: e.target.value }))}
                 />
               </div>
             </div>
-            <div className="bg-violet-50 p-6 rounded-3xl border border-violet-100 flex items-start gap-4">
+            <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 flex items-start gap-4">
               <span className="text-2xl">📱</span>
-              <p className="text-xs font-bold text-violet-900/60 leading-relaxed">
-                Você receberá uma mensagem de confirmação com <span className="text-violet-600">botões interativos</span> em seu WhatsApp minutos após o agendamento.
+              <p className="text-xs font-bold text-slate-500 leading-relaxed">
+                Você receberá uma mensagem de confirmação com <span className="text-slate-900">botões interativos</span> em seu WhatsApp minutos após o agendamento.
               </p>
             </div>
             <div className="flex gap-4">
@@ -158,7 +172,8 @@ const PublicBooking: React.FC<PublicBookingProps> = ({ professional, onBook }) =
               <button 
                 onClick={handleBooking}
                 disabled={!clientInfo.name || !clientInfo.phone}
-                className="flex-[2] bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-violet-200 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+                className="flex-[2] text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+                style={{ background: `linear-gradient(to right, ${theme.gradient.split(' ')[1].replace('from-', '')}, ${theme.gradient.split(' ')[2].replace('to-', '')})` }}
               >
                 Finalizar Agendamento ✓
               </button>
@@ -187,13 +202,15 @@ const PublicBooking: React.FC<PublicBookingProps> = ({ professional, onBook }) =
             </div>
             <button 
               onClick={() => { setStep(1); setSelectedDate(''); setSelectedTime(''); setClientInfo({name:'', phone:''}); }}
-              className="text-violet-600 font-black text-xs uppercase tracking-widest hover:text-fuchsia-600 transition-colors"
+              className="font-black text-xs uppercase tracking-widest transition-colors"
+              style={{ color: theme.gradient.split(' ')[1].replace('from-', '') }}
             >
               + Agendar outro horário
             </button>
           </div>
         )}
       </div>
+      <AdSense adSlot="0987654321" adClient={professional.adsenseId} />
     </div>
   );
 };
